@@ -7,7 +7,7 @@ import streamlit as st
 st.title('Monitoring Kualitas Udara: Tren PM2.5 dan Faktor Lingkungan')
 
 # Menyiapkan data
-df = pd.read_csv("../Data/PRSA_Data_Combined.csv")
+df = pd.read_csv("https://github.com/Masdarul/Kualitas-udara/blob/main/Data/PRSA_Data_Combined.csv")
 df.dropna(inplace=True)
 df = df[['year','PM2.5','TEMP','DEWP','station']]
 df = df.rename(columns={
