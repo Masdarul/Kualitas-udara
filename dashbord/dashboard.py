@@ -54,7 +54,7 @@ if not df.empty:
     # Filter data hanya untuk bulan ke-3, 6, 9, dan 12
     filtered_df = filtered_df[filtered_df['date'].dt.month.isin([3, 6, 9, 12])]
     
-    # Visualisasi PM2.5 berdasarkan bulan dan tahun
+    # Visualisasi PM2.5 berdasarkan bulan dan tahun (Gambar pertama - Line chart)
     if selected_station:
         plt.figure(figsize=(10, 6))
         station_data = filtered_df[filtered_df['station'] == selected_station]
@@ -65,7 +65,7 @@ if not df.empty:
         plt.title(f'Data PM2.5: Kualitas Udara di {selected_station} pada Tahun {selected_year}' if selected_year else f'Data PM2.5: Kualitas Udara di {selected_station}')
         plt.xlabel('Bulan-Tahun')
         plt.ylabel('PM2.5 (µg/m³)')
-        plt.xticks(rotation=45)
+        plt.xticks(station_data['date'].dt.strftime('%b-%Y').unique(), rotation=45)
         plt.legend(title='Stasiun')
         plt.grid(True)
     
@@ -74,7 +74,7 @@ if not df.empty:
         plt.clf()  # Clear the figure after plotting
     
     else:
-        # Visualisasi untuk semua stasiun jika tidak ada yang dipilih
+        # Visualisasi untuk semua stasiun jika tidak ada yang dipilih (Gambar pertama - Line chart)
         plt.figure(figsize=(10, 6))
         for station in stations:
             station_data = filtered_df[filtered_df['station'] == station]
@@ -83,7 +83,7 @@ if not df.empty:
         plt.title(f'Data PM2.5: Kualitas Udara pada Tahun {selected_year}' if selected_year else 'Data PM2.5: Kualitas Udara di Berbagai Lokasi')
         plt.xlabel('Bulan-Tahun')
         plt.ylabel('PM2.5 (µg/m³)')
-        plt.xticks(rotation=45)
+        plt.xticks(filtered_df['date'].dt.strftime('%b-%Y').unique(), rotation=45)
         plt.legend(title='Stasiun', bbox_to_anchor=(1.05, 1), loc='upper left')  # Adjust legend position
         plt.grid(True)
     
@@ -91,14 +91,14 @@ if not df.empty:
         st.pyplot(plt)
         plt.clf()  # Clear the figure after plotting
     
-    # Menghitung rata-rata PM2.5
+    # Menghitung rata-rata PM2.5 per stasiun (Gambar kedua - Bar chart)
     average_pm25_year = filtered_df.groupby('station')['PM2.5'].mean().reset_index()
     
     # Jika ada stasiun yang dipilih, filter data untuk stasiun tersebut
     if selected_station:
         average_pm25_year = average_pm25_year[average_pm25_year['station'] == selected_station]
     
-    # Membuat bar chart
+    # Membuat bar chart (Gambar kedua)
     plt.figure(figsize=(10, 6))
     plt.bar(average_pm25_year['station'], average_pm25_year['PM2.5'], color='skyblue')
     
