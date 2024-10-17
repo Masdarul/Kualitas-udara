@@ -50,6 +50,9 @@ if not df.empty:
         filtered_df = df[df['date'].dt.year == selected_year]
     else:
         filtered_df = df.copy()
+
+    # Filter data hanya untuk bulan ke-3, 6, 9, dan 12
+    filtered_df = filtered_df[filtered_df['date'].dt.month.isin([3, 6, 9, 12])]
     
     # Visualisasi PM2.5 berdasarkan bulan dan tahun
     if selected_station:
