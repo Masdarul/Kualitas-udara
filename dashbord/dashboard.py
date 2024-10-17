@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 
-# Judul 
+# Judul
 st.title('Monitoring Kualitas Udara: Tren PM2.5 dan Faktor Lingkungan')
 
+# Fungsi untuk memuat data
 @st.cache_data
 def load_data():
     # Menggunakan raw URL GitHub untuk membaca CSV
@@ -13,15 +14,16 @@ def load_data():
     try:
         df = pd.read_csv(url)
         df.dropna(inplace=True)
-        df = df[['year','month','day','PM2.5','TEMP','DEWP','station']]
+        df = df[['year', 'month', 'day', 'PM2.5', 'TEMP', 'DEWP', 'station']]
         df['date'] = pd.to_datetime(df[['year', 'month', 'day']])
         df = df.drop(['year', 'month', 'day'], axis=1)
-        df = df.rename(columns={'DEWP' : 'Relative_Humidity'})
+        df = df.rename(columns={'DEWP': 'Relative_Humidity'})
         return df
     except Exception as e:
         st.error(f"Terjadi kesalahan saat memuat data: {e}")
         return pd.DataFrame()  # Mengembalikan DataFrame kosong jika terjadi kesalahan
 
+# Memuat data
 df = load_data()
 
 # Cek apakah DataFrame tidak kosong
